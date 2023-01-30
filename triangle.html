@@ -1,0 +1,31 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <title>Triangle WebGL</title>
+
+    <link rel="stylesheet" href="../webgl.css" type="text/css">
+  </head>
+
+  <body>
+    <canvas id="glcanvas" width="640" height="480"></canvas>
+  </body>
+<!-code du fragment shader->
+<script id="shader-fs" type="x-shader/x-fragment">
+void main(void) {
+    gl_FragColor = vec4(0.8, 0.8, 1.0, 1.0);
+}
+</script>
+<!-code du vertex fragment->
+<script id="shader-vs" type="x-shader/x-vertex">
+attribute vec4 aVertexPosition;
+    uniform mat4 uModelViewMatrix;
+    uniform mat4 uProjectionMatrix;
+    void main() {
+      gl_Position = uProjectionMatrix * uModelViewMatrix * aVertexPosition;
+}
+</script>
+
+  <script src="gl-matrix.js"></script>
+  <script src="triangle.js"></script>
+</html>
