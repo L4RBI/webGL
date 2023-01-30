@@ -86,11 +86,26 @@ function initBuffers(gl) {
   gl.bindBuffer(gl.ELEMENT_ARRAY_BUFFER, null);
 
 
+  // const colorsBuffer = gl.createBuffer();
+  // gl.bindBuffer(gl.ARRAY_BUFFER, colorsBuffer);
+  // const colors = [
+  //   1.0,0.0,0.0,
+  //   0.0,1.0,0.0,
+  //   0.0,0.0,1.0
+  // ]
+  // gl.bufferData(gl.ARRAY_BUFFER,
+  //   new Float32Array(colors),
+  //   gl.STATIC_DRAW);
+  // gl.bindBuffer(gl.ARRAY_BUFFER, null);
+
+
+
 
 
   return {
     position: positionBuffer,
     indices: indicesBuffer,
+    // colors: colorsBuffer
   };
 }
 
@@ -137,6 +152,8 @@ function drawScene(gl, programInfo, buffers) {
     const stride = 0;         // combien d'octets à extraire entre un jeu de valeurs et le suivant
                               // 0 = utiliser le type et numComponents ci-dessus
     const offset = 0;         // démarrer à partir de combien d'octets dans le tampon
+
+
     gl.bindBuffer(gl.ARRAY_BUFFER, buffers.position);
     gl.vertexAttribPointer(
         programInfo.attribLocations.vertexPosition,
@@ -148,6 +165,19 @@ function drawScene(gl, programInfo, buffers) {
     gl.enableVertexAttribArray(
         programInfo.attribLocations.vertexPosition);
   }
+
+  // {
+  //   gl.bindBuffer(gl.ARRAY_BUFFER, buffers.colorsBuffer);
+  //   gl.vertexAttribPointer(
+  //       programInfo.vertexColorAttribute,
+  //       numComponents,
+  //       type,
+  //       normalize,
+  //       stride,
+  //       offset);
+  //   gl.enableVertexAttribArray(
+  //       programInfo.vertexColorAttribute);
+  // }
 
   gl.bindBuffer(gl.ELEMENT_ARRAY_BUFFER, buffers.indices);
 

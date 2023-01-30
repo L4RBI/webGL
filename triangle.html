@@ -13,16 +13,26 @@
 <!-code du fragment shader->
 <script id="shader-fs" type="x-shader/x-fragment">
 void main(void) {
-    gl_FragColor = vec4(0.8, 0.8, 1.0, 1.0);
+    
+    gl_FragColor = vec4(gl_FragCoord.x/ 640.0, 0, 0, 1);
 }
 </script>
 <!-code du vertex fragment->
 <script id="shader-vs" type="x-shader/x-vertex">
-attribute vec4 aVertexPosition;
+
+    attribute vec4 aVertexPosition;
+    attribute vec3 aVertexColor;
+
     uniform mat4 uModelViewMatrix;
     uniform mat4 uProjectionMatrix;
+
+    out vec4 vColor;
+
     void main() {
+
       gl_Position = uProjectionMatrix * uModelViewMatrix * aVertexPosition;
+      vColor = colors[gl_VertexID % 4];
+
 }
 </script>
 
