@@ -57,15 +57,14 @@ function initBuffers(gl) {
   // Définir le positionBuffer comme étant celui auquel appliquer les opérations de tampon à partir d'ici.
   gl.bindBuffer(gl.ARRAY_BUFFER, positionBuffer);
 
-  let  positions = [];
-  let k = 6;
-  let angle = 0.0;
-  for (let k = 0; k < n; ++k) {
-    positions.push(radius * cos(angle));
-    positions.push(radius * sin(angle));
-    positions.push(0.0);
-    angle += angleIncrement;
-  }
+  const positions = [ // prints a square with triangles
+  -1.0 , -1.0 , 0 ,
+  1 , -1 , 0 , 
+  1 , 1 , 0 , 
+  -1.0 , -1.0 , 0 ,
+  1 , 1 , 0 , 
+  -1, 1, 0 ,
+  ];
 
   gl.bufferData(gl.ARRAY_BUFFER,
                 new Float32Array(positions),
