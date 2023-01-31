@@ -28,6 +28,7 @@ function main() {
     program: shaderProgram,
     attribLocations: {
       vertexPosition: gl.getAttribLocation(shaderProgram, 'aVertexPosition'),//création d'un pointeur pour les données de vertex
+      vertexColor: gl.getAttribLocation(shaderProgram, 'aVertexColor') // do the same for colors
     },
     uniformLocations: {
       projectionMatrix: gl.getUniformLocation(shaderProgram, 'uProjectionMatrix'),
@@ -60,6 +61,8 @@ function initBuffers(gl) {
   -1.0 , -1.0 , 0 ,
   1 , -1 , 0 , 
   1 , 1 , 0 , 
+  -1.0 , -1.0 , 0 ,
+  1 , 1 , 0 , 
   -1, 1, 0 ,
   ];
 
@@ -77,7 +80,7 @@ function initBuffers(gl) {
 
   gl.bindBuffer(gl.ELEMENT_ARRAY_BUFFER, indicesBuffer);
 
-  const indixes = [3,2,1,3,1,0];
+  const indixes = [0,1,2,3,4,5];
 
   gl.bufferData(gl.ELEMENT_ARRAY_BUFFER,
     new Uint16Array(indixes),
@@ -85,18 +88,21 @@ function initBuffers(gl) {
 
   gl.bindBuffer(gl.ELEMENT_ARRAY_BUFFER, null);
 
-
-  // const colorsBuffer = gl.createBuffer();
-  // gl.bindBuffer(gl.ARRAY_BUFFER, colorsBuffer);
-  // const colors = [
-  //   1.0,0.0,0.0,
-  //   0.0,1.0,0.0,
-  //   0.0,0.0,1.0
-  // ]
-  // gl.bufferData(gl.ARRAY_BUFFER,
-  //   new Float32Array(colors),
-  //   gl.STATIC_DRAW);
-  // gl.bindBuffer(gl.ARRAY_BUFFER, null);
+  const colors = [
+    1.0,0.0,0.0,1.0,
+    1.0,0.0,0.0,1.0,
+    1.0,0.0,0.0,1.0,
+    0.0,1.0,0.0,1.0,
+    0.0,1.0,0.0,1.0,
+    0.0,1.0,0.0,1.0,
+  ]
+  const colorsBuffer = gl.createBuffer();
+  gl.bindBuffer(gl.ARRAY_BUFFER, colorsBuffer);
+ 
+  gl.bufferData(gl.ARRAY_BUFFER,
+    new Float32Array(colors),
+    gl.STATIC_DRAW);
+  gl.bindBuffer(gl.ARRAY_BUFFER, null);
 
 
 
@@ -105,7 +111,7 @@ function initBuffers(gl) {
   return {
     position: positionBuffer,
     indices: indicesBuffer,
-    // colors: colorsBuffer
+    colors: colorsBuffer
   };
 }
 
@@ -144,6 +150,19 @@ function drawScene(gl, programInfo, buffers) {
                  modelViewMatrix,     // matrix to translate
                  [-0.0, 0.0, -6.0]);  // amount to translate
 
+
+  {
+  gl.bindBuffer(gl.ARRAY_BUFFER, buffers.colors);
+  gl.vertexAttribPointer(
+      programInfo.attribLocations.vertexColor,
+      4,
+      gl.FLOAT,
+      false,
+      0,
+      0);
+  gl.enableVertexAttribArray(
+      programInfo.attribLocations.vertexColor);
+}
   // Indiquer à WebGL comment extraire les positions à partir du tampon des coordonnées (buffers.position) pour les mettre dans l'attribut vertexPosition.
   {
   	const numComponents = 3;  // 3 valeurs par itération
@@ -166,18 +185,7 @@ function drawScene(gl, programInfo, buffers) {
         programInfo.attribLocations.vertexPosition);
   }
 
-  // {
-  //   gl.bindBuffer(gl.ARRAY_BUFFER, buffers.colorsBuffer);
-  //   gl.vertexAttribPointer(
-  //       programInfo.vertexColorAttribute,
-  //       numComponents,
-  //       type,
-  //       normalize,
-  //       stride,
-  //       offset);
-  //   gl.enableVertexAttribArray(
-  //       programInfo.vertexColorAttribute);
-  // }
+
 
   gl.bindBuffer(gl.ELEMENT_ARRAY_BUFFER, buffers.indices);
 
@@ -197,7 +205,7 @@ function drawScene(gl, programInfo, buffers) {
       
   //Dessin de l'objet
   {
-    const offset = 0;
+    const offset = 0; 
     const vertexCount = 6;
     gl.drawElements(gl.TRIANGLES, vertexCount, gl.UNSIGNED_SHORT,offset);
   }

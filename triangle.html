@@ -12,26 +12,30 @@
   </body>
 <!-code du fragment shader->
 <script id="shader-fs" type="x-shader/x-fragment">
-void main(void) {
+  precision mediump float;
+
+  varying vec4 vColor;
+  
+  void main(void) {
     
-    gl_FragColor = vec4(gl_FragCoord.x/ 640.0, 0, 0, 1);
+    gl_FragColor = vColor;
 }
 </script>
 <!-code du vertex fragment->
 <script id="shader-vs" type="x-shader/x-vertex">
-
+    precision mediump float;
     attribute vec4 aVertexPosition;
-    attribute vec3 aVertexColor;
+    attribute vec4 aVertexColor;
 
     uniform mat4 uModelViewMatrix;
     uniform mat4 uProjectionMatrix;
 
-    out vec4 vColor;
+    varying vec4 vColor;
 
     void main() {
 
       gl_Position = uProjectionMatrix * uModelViewMatrix * aVertexPosition;
-      vColor = colors[gl_VertexID % 4];
+      vColor = aVertexColor;
 
 }
 </script>
